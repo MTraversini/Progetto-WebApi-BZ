@@ -1,0 +1,535 @@
+/* === Inizio Sezione Generale ============== */
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	display: flex;
+	margin: 0;
+	background-color: #f5f7fa;
+}
+nav {
+	width: 240px;
+	background-color: #111; /* uguale alla topbar */
+	color: white;
+	padding: 20px 10px;
+	box-sizing: border-box;
+}
+nav h2 {
+	font-size: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+nav a {
+	display: block;
+	color: white;
+	text-decoration: none;
+	padding: 10px 16px;
+	margin: 6px 0;
+	border-radius: 4px;
+	transition: background 0.3s;
+}
+nav a.active, nav a:hover {
+	background-color: #3c4f65;
+}
+main {
+	min-width: 0;
+	flex: 1 1 auto;
+	padding: 30px;
+}
+.section {
+	display: none;
+}
+.section.active {
+	display: block;
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1 {
+	color: #2c3e50;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 15px;
+}
+th, td {
+	padding: 10px;
+	border: 1px solid #b0b4b9;
+	text-align: left;
+}
+button {
+	margin-top: 20px;
+	padding: 10px 16px;
+	background-color: #2c3e50;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+button:hover {
+	background-color: #1a242f;
+}
+label {
+	display: block;
+	margin: 12px 0 6px;
+}
+input, select {
+	padding: 8px;
+	width: 100%;
+	max-width: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+.titolo-sezione {
+	font-size: 1.4em;
+	margin: 0 0 10px;
+}
+.titolo-storico {
+    margin: 0 0 12px;
+}
+.conferma-rinnovo-wrapper {
+    text-align: center;
+    margin-top: 25px;
+}
+.checkbox-rinnovo {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+/* === Fine Sezione Generale ============== */
+
+/* === Topbar ============== */
+.topbar {
+    background: #111;
+    color: #00FF00;
+    padding: 10px 20px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+.logo-topbar {
+    height: 40px;
+}
+.topbar-lingue {
+    color: #2ca58d;
+}
+/* === Fine Topbar ============== */
+
+/* === Inizio Sezione Gestione Tooltip ============== */
+/* ellissi invariata */
+.ellipsis{
+	display:inline-block;
+	max-width:100%;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+/* cambia cursore solo dove c’è davvero ellissi  – aggiunto via JS */
+.rinnovo-table td.has-tooltip{ cursor:help; }
+
+/* tooltip “globale” fuori dalla tabella */
+.live-tooltip{
+	position:absolute;
+	transform:translate(-50%,-100%);
+	background:#fff;
+	color:#1f2d3d;              /* navy */
+	border:1px solid #3c4f65;
+	padding:6px 10px;
+	font-size:.8rem;
+	border-radius:4px;
+	white-space:nowrap;
+	box-shadow:0 2px 8px rgba(0,0,0,.15);
+	pointer-events:none;
+	z-index:1000;
+	opacity:0;
+	transition:opacity .15s;
+}
+/* === Fine Sezione Gestione Tooltip ============== */
+
+/* === Inizio Sezione Gestione Tabelle ============== */
+/* ===== Gestione tabella Rinnovi ===== */
+.rinnovo-table{
+	width:100%;
+	table-layout:fixed;          /* evita layout ballerino */
+	border-collapse:separate;
+	border-spacing:0;
+	border-radius:8px;           /* angoli arrotondati */
+	overflow:hidden;             /* maschera i bordi */
+}
+
+.rinnovo-table thead{
+	background:#1f2d3d;          /* usa il tuo primary */
+	color:#fff;
+}
+
+/* celle & intestazioni */
+.rinnovo-table th,
+.rinnovo-table td{
+	padding:10px;
+	border-bottom:1px solid #ccc;
+	word-wrap:break-word;
+	overflow-wrap:break-word;
+	text-align:center;           /* default centrato */
+}
+
+/* allineamenti numerici */
+.rinnovo-table td.num-rilascio,
+.rinnovo-table td.diritti,
+.rinnovo-table td.onorari,
+.rinnovo-table td.iva,
+.rinnovo-table td.totale{
+	text-align:right;
+}
+
+/* allineamenti centrati “logici” */
+.rinnovo-table td.data-scadenza,
+.rinnovo-table td.paese{
+	text-align:center;
+}
+
+/* larghezze colonne */
+.rinnovo-table th:nth-child(1),
+.rinnovo-table td:nth-child(1),
+.rinnovo-table th:nth-child(2),
+.rinnovo-table td:nth-child(2){
+	width:65px;                  /* Rinnova / Revoca */
+}
+
+.rinnovo-table th:nth-child(3),
+.rinnovo-table td:nth-child(3){
+	width:100px;                 /* Cliente */
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.rinnovo-table th:nth-child(4),
+.rinnovo-table td:nth-child(4){
+	width:130px;                 /* Titolare */
+}
+
+.rinnovo-table th:nth-child(5),
+.rinnovo-table td:nth-child(5){
+	width:150px;                 /* Num. Rilascio */
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.rinnovo-table th:nth-child(6),
+.rinnovo-table td:nth-child(6),
+.rinnovo-table th:nth-child(7),
+.rinnovo-table td:nth-child(7){
+	width:90px;                  /* Paese / Data Scad. */
+}
+
+.rinnovo-table th:nth-child(8),
+.rinnovo-table td:nth-child(8),
+.rinnovo-table th:nth-child(9),
+.rinnovo-table td:nth-child(9),
+.rinnovo-table th:nth-child(10),
+.rinnovo-table td:nth-child(10),
+.rinnovo-table th:nth-child(11),
+.rinnovo-table td:nth-child(11){
+	width:70px;                  /* Diritti / Onorari / IVA / Totale */
+}
+
+/* ===== Gestione tabella Storico ===== */
+.storico-table{
+	width:100%;
+	border-collapse:separate;
+	border-spacing:0;
+	border-radius:8px;
+	overflow:hidden;
+	box-shadow:0 0 10px rgba(0,0,0,.1);
+	margin-top: 20px;
+}
+
+/* intestazione */
+.storico-table thead{
+	background:#1f2d3d;
+	color:#fff;
+}
+
+/* larghezze specifiche */
+.storico-table th:nth-child(1){width:9%;}
+.storico-table th:nth-child(2){width:15%;}
+.storico-table th:nth-child(7),
+.storico-table th:nth-child(8),
+.storico-table th:nth-child(9),
+.storico-table th:nth-child(10){width:11%;}
+
+/* vertical-align di default + numeri a destra */
+.storico-table td{
+	vertical-align:middle;
+}
+.storico-table td.diritti,
+.storico-table td.onorari,
+.storico-table td.iva,
+.storico-table td.totale{
+	text-align:right;
+	white-space:nowrap;
+}
+.storico-header {
+    background: #1f2d3d;
+    color: #fff;
+}
+.filter-panel{
+	padding: 10px 18px 6px 18px;
+	background: #f0f4f8;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	margin-bottom: 16px;
+	width: 100%;
+	box-sizing: border-box;
+}
+.filter-row {
+	display: flex;
+	align-items: flex-end;
+	gap: 28px; /* aumentato da 18px */
+	flex-wrap: wrap;
+	margin-bottom: 0;
+}
+.filter-row > div {
+	min-width: 150px;
+	flex: 1 1 0;
+}
+.filter-row label {
+	margin: 0 0 2px 0;
+	font-size: 0.98em;
+	font-weight: bold;
+}
+.filter-actions {
+	display: flex;
+	justify-content: center;
+	gap: 18px;
+	margin-top: 10px;
+}
+.filter-row input,
+.filter-row select {
+	height: 38px;
+	font-size: 1em;
+	padding: 6px 8px;
+	margin-bottom: 0;
+	box-sizing: border-box;
+}
+.bottone-filtri {
+    width: 120px;
+    margin-right: 18px;
+}
+.bottone-reset {
+    width: 120px;
+    background: #ccc;
+    color: #000;
+}
+@media (max-width: 900px) {
+	.filter-row { flex-wrap: wrap; }
+	.filter-row > div { min-width: 120px; }
+	.filter-actions { flex-direction: column; gap: 8px; }
+}
+#storicoTable{display:none;}
+.paginazione-storico {
+    margin-top: 20px;
+    font-size: .95em;
+    color: #444;
+    display: none;
+}
+/* === Fine Sezione Gestione Tabelle ============== */
+
+/* === Gestione Password ========================================== */
+#password{
+  margin:0 auto;        /* centrata       */
+  width:100%;           /* fluida su mobile */
+}
+
+body > div:first-of-type{
+	width: 100vw;
+	min-height: 100vh;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+}
+
+html,body { overflow-y:hidden; }   /* disattiva la scrollbar generale  */
+
+main      { overflow-y:auto; }     /* scrolla solo l’area contenuti    */
+
+.titolo-password {
+    background: #1f2d3d;
+    color: #fff;
+    padding: 12px 0;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 1.5em;
+}
+
+.form-password {
+    margin-top: 30px;
+}
+
+.btn-conferma-password {
+    padding: 10px 20px;
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+/* === Popup Dettaglio Brevetto ========== */
+#popupDettaglio {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(31,45,61,0.25);
+    z-index: 1000;
+    align-items: center;      /* centra verticalmente */
+    justify-content: center;  /* centra orizzontalmente */
+}
+
+#popupDettaglio .popup-box {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+    padding: 32px 28px 24px 28px;
+    min-width: 340px;
+    max-width: 95vw;
+    width: 700px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    animation: popupIn 0.25s cubic-bezier(.4,1.4,.6,1) both;
+    margin-top: -7vh; /* Sposta il popup leggermente più in alto rispetto al centro */
+}
+@keyframes popupIn {
+    0% { transform: scale(0.95) translateY(40px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes popupOut {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    100% { transform: scale(0.95) translateY(40px); opacity: 0; }
+}
+#popupDettaglio .popup-close {
+    position: absolute;
+    top: 14px; right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.7em;
+    color: #3c4f65;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+#popupDettaglio .popup-close:hover {
+    color: #e74c3c;
+}
+#popupDettaglio h2 {
+    margin-top: 0;
+    background: #1f2d3d;
+    color: #fff;
+    font-size: 1.25em;
+    padding: 12px 0 12px 18px;
+    border-radius: 8px 8px 0 0;
+    letter-spacing: 0.5px;
+}
+#popupDettaglio .popup-content {
+    display: flex;
+    gap: 24px;
+    margin-top: 18px;
+}
+#popupDettaglio .popup-img {
+    flex: 1;
+    border: 1px solid #eee;
+    padding: 10px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    text-align: center;
+}
+#popupDettaglio .popup-img-brevetto {
+    max-width: 100%;
+}
+#popupDettaglio .popup-fields {
+    flex: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+    font-size: 1em;
+}
+#popupDettaglio .popup-fields div {
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+#popupDettaglio .popup-actions {
+    text-align: center;
+    margin-top: 28px;
+}
+#popupDettaglio .popup-actions button {
+    padding: 10px 24px;
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s;
+}
+#popupDettaglio .popup-actions button:hover {
+    background: #1a242f;
+}
+
+/* === Riga Evidenziata ========== */
+.riga-cliente-1 {
+    background-color: #f4f6fa !important; /* grigio chiaro */
+}
+.riga-cliente-2 {
+    background-color: #dee2e6 !important; /* grigio più scuro */
+}
+
+/* === Wrapper Column ========== */
+.wrapper-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* === Content Flex ========== */
+.content-flex {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+/* === Main Area ========== */
+.main-area {
+    padding: 10px 20px;
+    overflow-x: auto;
+    flex: 1;
+    min-width: 0;
+}
+
+/* === Form Row ========== */
+.riga-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.label-form {
+    width: 160px;
+    text-align: left;
+}
+
+.input-form {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* === Col Cliente ========== */
+.col-cliente {
+    width: 20%;
+}
